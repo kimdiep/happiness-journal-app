@@ -20,6 +20,7 @@ I want to learn more about:
 - Flask
 - Flask testing
 - OAuth with Flask
+- PostgreSQL
 - SQLAlchemy
 - Postman
 
@@ -34,6 +35,7 @@ I want to learn more about:
 - Python
 - Flask
 - OAuth
+- PostgreSQL
 - SQLAlchemy
 - Postman
 
