@@ -13,6 +13,11 @@ class TestingViews(TestCase):
     self.assertEqual(response.status_code, 200)
     self.assertIn(b'Hello, Happiness Journal!', response.data)
 
+  def test_ideas(self):
+    response = self.client.get('/ideas', content_type = 'html/text')
+    self.assertEqual(response.status_code, 200)
+    self.assertIn(b'Happiness Journal Ideas!', response.data)
+
 
 if __name__ == '__main__':
   unittest.main()

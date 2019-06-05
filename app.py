@@ -6,6 +6,10 @@ app = Flask(__name__)
 def index():
   return "Hello, Happiness Journal!"
 
+@app.route('/ideas')
+def ideas():
+  return "My Happiness Journal Ideas!"
+
 
 if __name__=="__main__":
   app.run(debug=True)
