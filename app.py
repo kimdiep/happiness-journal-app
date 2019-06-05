@@ -1,14 +1,16 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return "Hello, Happiness Journal!"
+  text = "Hello, Happiness Journal!"
+  return render_template('index.html', message = text)
 
 @app.route('/ideas')
 def ideas():
-  return "My Happiness Journal Ideas!"
+  text = "My Happiness Journal Ideas!"
+  return render_template('ideas/homepage.html', message = text)
 
 
 if __name__=="__main__":

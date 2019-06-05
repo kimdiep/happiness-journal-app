@@ -19,6 +19,7 @@ I want to learn more about:
 - CRUD (create, read, update, delete)
 - Flask
 - Flask testing
+- Jinja2 templating engine
 - OAuth with Flask
 - PostgreSQL
 - SQLAlchemy
@@ -36,6 +37,7 @@ I want to learn more about:
 
 - Python
 - Flask
+- Jinja2 templating engine
 - OAuth
 - PostgreSQL
 - SQLAlchemy
