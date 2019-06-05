@@ -19,6 +19,7 @@ I want to learn more about:
 - CRUD (create, read, update, delete)
 - Flask
 - Flask testing
+- Jinja2 templating engine
 - OAuth with Flask
 - PostgreSQL
 - SQLAlchemy
@@ -36,6 +37,7 @@ I want to learn more about:
 
 - Python
 - Flask
+- Jinja2 templating engine
 - OAuth
 - PostgreSQL
 - SQLAlchemy
@@ -67,14 +69,15 @@ https://www.getpostman.com/downloads/
 
 ## How to use?
 
-To start up the Flask app:
+To start up the Flask server:
 
 `python3 main.py`
 
-Alternatively, you can also tell your terminal the application to work with by exporting the FLASK_APP environment variable:
+Alternatively, you can also tell your terminal the application to work with by exporting the FLASK_APP environment variable and setting the debug mode to `true` to enable the server to detect changes:
 
 ```bash
 $ export FLASK_APP=app.py
+$ export FLASK_DEBUG=1
 $ flask run
  * Running on http://127.0.0.1:5000/
 ```
