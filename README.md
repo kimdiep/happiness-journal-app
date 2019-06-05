@@ -26,6 +26,8 @@ I want to learn more about:
 
 ## Build status
 
+[![Build Status](https://travis-ci.org/kimdiep/happiness-journal-app.svg?branch=master)](https://travis-ci.org/kimdiep/happiness-journal-app)
+
 ## Code style
 
 ## Screenshots
