@@ -65,6 +65,17 @@ https://www.getpostman.com/downloads/
 
 ## How to use?
 
+To start up the Flask app:
+
+`python3 main.py`
+
+Alternatively, you can also tell your terminal the application to work with by exporting the FLASK_APP environment variable:
+
+```bash
+$ export FLASK_APP=app.py
+$ flask run
+ * Running on http://127.0.0.1:5000/
+```
 
 **unittest and flask-testing**
 Unit tests for routes and test database using flask-testing module.
