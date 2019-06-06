@@ -11,5 +11,6 @@ class Idea(db.Model):
     def __repr__(self):
         return '<Idea %r>' % self.note
 
-    def __init__(self, note):
+    def __init__(self, note, complete):
         self.note = note
+        self.complete = complete
