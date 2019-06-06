@@ -14,7 +14,16 @@ modus = Modus(app)
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-app = Flask(__name__)
+from happiness_journal import *
+
+def create_session(config):
+    engine = create_engine(config['SQLALCHEMY_DATABASE_URI'])
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session._model_changes = {}
+    return session
+
+manual_session = create_session(app.config)
 
 @app.route('/')
 def index():

@@ -86,7 +86,7 @@ $ flask run
 ### Creating a database and database tables in psql using SQLAlchemy
 
 1. Enter `psql` to connect to the database server
-2. `CREATE DATABASE 'happiness-journal';` will create a database for the happiness journal
+2. `CREATE DATABASE "happiness-journal";` will create a database for the happiness journal
 3. `\l` to list database to ensure `happiness-journal` is a database, `\q` to quit psql server
 
 ### Database Migrations with Flask Migrate
