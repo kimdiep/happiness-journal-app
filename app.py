@@ -1,4 +1,18 @@
-from flask import Flask, render_template
+import sys
+sys.path.append('./models')
+
+from flask import Flask, request, jsonify, render_template
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine, and_, text
+from sqlalchemy.orm import sessionmaker
+from flask_modus import Modus
+from flask_migrate import Migrate
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://localhost/happiness-journal'
+modus = Modus(app)
+db = SQLAlchemy(app)
+Migrate(app, db)
 
 app = Flask(__name__)
 
