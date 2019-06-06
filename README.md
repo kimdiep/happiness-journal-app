@@ -82,6 +82,31 @@ $ flask run
  * Running on http://127.0.0.1:5000/
 ```
 
+
+### Database Migrations with Flask Migrate
+
+**Option 1 (personal project):**
+`db.create_all` to create db tables in Flask-SQLAlchemy
+
+**Option 2 (collaborative working):**
+- To track changes in db schema
+- Import 'Migrate' class from 'flask_migrate'. Pass 'Migrate' to app along with db instance.
+- Change to the structure of the database should be recorded in a migration
+
+1. Setup migration repository from root of project directory (you only need to do this once):
+
+```bash
+`flask db init`
+```
+
+2. Run `flask db migrate` or with a message `flask db migrate -m "creates ideas table"` to create pending migrations based on the model `happiness_journal.py'
+This will create a file within `/migrations/versions`
+
+3. To run the migration file, type `flask db upgrade`. It will run SQL to make a change to the db schema and moves forward with pending migrations
+
+4. To go back in the migration history, do `flask db downgrade`
+
+
 **unittest and flask-testing**
 Unit tests for routes and test database using flask-testing module.
 
