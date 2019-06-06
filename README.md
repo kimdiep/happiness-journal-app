@@ -22,7 +22,7 @@ I want to learn more about:
 - Jinja2 templating engine
 - OAuth with Flask
 - PostgreSQL
-- SQLAlchemy
+- SQLAlchemy ORM
 - Postman
 
 ## Build status
@@ -40,7 +40,7 @@ I want to learn more about:
 - Jinja2 templating engine
 - OAuth
 - PostgreSQL
-- SQLAlchemy
+- SQLAlchemy ORM
 - Postman
 
 SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.
@@ -80,6 +80,21 @@ $ export FLASK_APP=app.py
 $ export FLASK_DEBUG=1
 $ flask run
  * Running on http://127.0.0.1:5000/
+```
+
+### Creating a database and database tables in psql using SQLAlchemy
+
+1. Enter `psql` to connect to the database server
+2. `CREATE DATABASE 'happiness-journal';` will create a database for the happiness journal
+3. `\l` to list database to ensure `happiness-journal` is a database, `\q` to quit psql server
+4. In the root directory, start `python3` and enter the following commands to initialise database tables from the `happiness-journal.py` SQLAlchemy model:
+
+```python
+
+>>> from main import db
+>>> db.create_all()
+>>> exit()
+
 ```
 
 **unittest and flask-testing**
