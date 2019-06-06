@@ -6,5 +6,15 @@
 </head>
 <body>
     {{ message }}
+    <div>Got an awesome idea? Note it down here: 
+        <form action="/ideas" method="POST">
+            <input type="text" name="idea_note"><input type="submit">
+        </form>
+    </div>
+    <div>
+        {% for idea in ideas %}
+            <h2>{{ idea.note }}</h2>
+        {% endfor %}
+    </div>
 </body>
 </html>

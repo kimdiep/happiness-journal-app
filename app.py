@@ -1,7 +1,7 @@
 import sys
 sys.path.append('./models')
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, text
 from sqlalchemy.orm import sessionmaker
@@ -30,10 +30,15 @@ def index():
   text = "Hello, Happiness Journal!"
   return render_template('index.html', message = text)
 
-@app.route('/ideas')
+@app.route('/ideas', methods=["GET", "POST"])
 def ideas():
   text = "My Happiness Journal Ideas!"
-  return render_template('ideas/homepage.html', message = text)
+  if request.method == 'POST':
+    new_idea = Idea(note=request.form['idea_note'], complete=False)
+    db.session.add(new_idea)
+    db.session.commit()
+    return redirect(url_for('ideas'))
+  return render_template('ideas/homepage.html', message = text, ideas = Idea.query.all())
 
 
 if __name__=="__main__":
