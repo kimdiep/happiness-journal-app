@@ -40,6 +40,23 @@ def ideas():
     return redirect(url_for('ideas'))
   return render_template('ideas/homepage.html', message = text, ideas = Idea.query.all())
 
+@app.route('/ideas/edit/<int:id>', methods=['POST', 'GET'])
+def edit(id):
+  idea = Idea.query.get(id)
+  if request.method == 'POST':
+    idea.note = request.form['idea_note']
+    db.session.commit()
+    return redirect(url_for('ideas'))
+  return render_template('ideas/edit.html', idea = idea)
+
+@app.route('/ideas/delete/<int:id>', methods=['POST', 'GET'])
+def delete(id):
+  idea = Idea.query.get(id)
+  db.session.delete(idea)
+  db.session.commit()
+  
+  return redirect(url_for('ideas'))
+
 
 if __name__=="__main__":
   app.run(debug=True)

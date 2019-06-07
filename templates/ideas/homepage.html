@@ -14,6 +14,8 @@
     <div>
         {% for idea in ideas %}
             <h2>{{ idea.note }}</h2>
+            <a href="/ideas/edit/{{ idea.id }}">Edit</a>
+            <a href="/ideas/delete/{{ idea.id }}">Delete</a>
         {% endfor %}
     </div>
 </body>

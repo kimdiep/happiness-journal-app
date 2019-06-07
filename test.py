@@ -25,13 +25,22 @@ class TestingViews(TestCase):
     self.assertEqual(response.status_code, 200)
     self.assertIn(b'Hello, Happiness Journal!', response.data)
 
-  def test_ideas(self):
+  def test_view_ideas(self):
     response = self.client.get('/ideas', content_type = 'html/text')
     self.assertEqual(response.status_code, 200)
     self.assertIn(b'Happiness Journal Ideas!', response.data)
     self.assertIn(b'This is a test note', response.data)
     self.assertIn(b'This is another test note', response.data)
 
+  def test_edit_idea(self):
+    response = self.client.get('/ideas/edit/2', content_type = 'html/text')
+    self.assertEqual(response.status_code, 200)
+
+  def test_delete_idea(self):
+    response = self.client.get('/ideas/delete/1', content_type = 'html/text')
+    response = self.client.get('/ideas', content_type = 'html/text')
+    self.assertNotIn(b'This is a test note', response.data)
+    
 
   def tearDown(self):
     db.drop_all()
