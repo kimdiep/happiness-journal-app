@@ -8,7 +8,7 @@ from happiness_journal import *
 
 class TestingViews(TestCase):
 
-    #creates instance of flask app
+  #creates instance of flask app
   def create_app(self):
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///testing.db'
     return app
@@ -32,13 +32,28 @@ class TestingViews(TestCase):
     self.assertIn(b'This is a test note', response.data)
     self.assertIn(b'This is another test note', response.data)
 
-  def test_edit_idea(self):
+  def test_create_idea(self):
+    new_idea = self.client.post(
+      '/ideas',
+      data=dict(idea_note="Created a new note"),
+      follow_redirects=True
+    )
+    self.assertIn(b'Created a new note', new_idea.data)
+
+  def test_edit_route(self):
     response = self.client.get('/ideas/edit/2', content_type = 'html/text')
     self.assertEqual(response.status_code, 200)
 
+  def test_edit_idea(self):
+    edit_idea = self.client.post(
+      '/ideas/edit/2',
+      data=dict(idea_note="This is another test note - edited"),
+      follow_redirects=True
+    )
+    self.assertIn(b'This is another test note - edited', edit_idea.data)
+
   def test_delete_idea(self):
-    response = self.client.get('/ideas/delete/1', content_type = 'html/text')
-    response = self.client.get('/ideas', content_type = 'html/text')
+    response = self.client.get('/ideas/delete/1', content_type = 'html/text', follow_redirects=True)
     self.assertNotIn(b'This is a test note', response.data)
     
 

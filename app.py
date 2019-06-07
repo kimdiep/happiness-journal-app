@@ -40,7 +40,7 @@ def ideas():
     return redirect(url_for('ideas'))
   return render_template('ideas/homepage.html', message = text, ideas = Idea.query.all())
 
-@app.route('/ideas/edit/<int:id>', methods=['POST', 'GET'])
+@app.route('/ideas/edit/<int:id>', methods=["GET", "POST"])
 def edit(id):
   idea = Idea.query.get(id)
   if request.method == 'POST':
@@ -49,7 +49,7 @@ def edit(id):
     return redirect(url_for('ideas'))
   return render_template('ideas/edit.html', idea = idea)
 
-@app.route('/ideas/delete/<int:id>', methods=['POST', 'GET'])
+@app.route('/ideas/delete/<int:id>', methods=['GET'])
 def delete(id):
   idea = Idea.query.get(id)
   db.session.delete(idea)
