@@ -34,7 +34,7 @@ class TestingViews(TestCase):
 
   def test_create_idea(self):
     new_idea = self.client.post(
-      '/ideas',
+      '/ideas/new',
       data=dict(idea_note="Created a new note"),
       follow_redirects=True
     )

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Happiness Journal Ideas</title>
+</head>
+<body>
+    {{ message }}
+    <div>Got an awesome idea? Note it down here: 
+        <form action="/ideas/new" method="POST">
+            <input type="text" name="idea_note"><input type="submit">
+        </form>
+    </div>
+</body>
+</html>

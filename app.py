@@ -17,11 +17,11 @@ Migrate(app, db)
 from happiness_journal import *
 
 def create_session(config):
-    engine = create_engine(config['SQLALCHEMY_DATABASE_URI'])
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    session._model_changes = {}
-    return session
+  engine = create_engine(config['SQLALCHEMY_DATABASE_URI'])
+  Session = sessionmaker(bind=engine)
+  session = Session()
+  session._model_changes = {}
+  return session
 
 manual_session = create_session(app.config)
 
@@ -30,15 +30,20 @@ def index():
   text = "Hello, Happiness Journal!"
   return render_template('index.html', message = text)
 
-@app.route('/ideas', methods=["GET", "POST"])
+@app.route('/ideas', methods=["GET"])
 def ideas():
   text = "My Happiness Journal Ideas!"
+  ideas = Idea.query.all()
+  return render_template('ideas/homepage.html', message = text, ideas = ideas)
+
+@app.route('/ideas/new', methods=['POST', 'GET'])
+def new():
   if request.method == 'POST':
-    new_idea = Idea(note=request.form['idea_note'], complete=False)
+    new_idea = Idea(request.form['idea_note'], complete=False)
     db.session.add(new_idea)
     db.session.commit()
     return redirect(url_for('ideas'))
-  return render_template('ideas/homepage.html', message = text, ideas = Idea.query.all())
+  return render_template('ideas/new.html')
 
 @app.route('/ideas/edit/<int:id>', methods=["GET", "POST"])
 def edit(id):
