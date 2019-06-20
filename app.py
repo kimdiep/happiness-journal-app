@@ -1,6 +1,7 @@
 import sys
 sys.path.append('./models')
 
+# flask setup
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, text
@@ -10,6 +11,7 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 
 app = Flask(__name__)
+# bcrypt for password hashing
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://localhost/happiness-journal'
 modus = Modus(app)
@@ -20,8 +22,10 @@ import os
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+# import models from happiness_journal.py for Idea
 from happiness_journal import *
 
+# generate session
 def create_session(config):
   engine = create_engine(config['SQLALCHEMY_DATABASE_URI'])
   Session = sessionmaker(bind=engine)
@@ -31,22 +35,29 @@ def create_session(config):
 
 manual_session = create_session(app.config)
 
+# import form for user signup and login
+# import user model
 from forms import UserForm
 from user_model import User
 
 from sqlalchemy.exc import IntegrityError
 
+# app-controllers
+
+# homepage
 @app.route('/')
 def index():
   text = "Hello, Happiness Journal!"
   return render_template('index.html', message = text)
 
+# ideas page
 @app.route('/ideas', methods=["GET"])
 def ideas():
   text = "My Happiness Journal Ideas!"
   ideas = Idea.query.all()
   return render_template('ideas/homepage.html', message = text, ideas = ideas)
 
+# route to add new idea
 @app.route('/ideas/new', methods=['POST', 'GET'])
 def new():
   if request.method == 'POST':
@@ -56,6 +67,7 @@ def new():
     return redirect(url_for('ideas'))
   return render_template('ideas/new.html')
 
+# route to edit existing idea
 @app.route('/ideas/edit/<int:id>', methods=["GET", "POST"])
 def edit(id):
   idea = Idea.query.get(id)
@@ -65,6 +77,7 @@ def edit(id):
     return redirect(url_for('ideas'))
   return render_template('ideas/edit.html', idea = idea)
 
+# route to delete existing idea
 @app.route('/ideas/delete/<int:id>', methods=['GET'])
 def delete(id):
   idea = Idea.query.get(id)
@@ -73,6 +86,7 @@ def delete(id):
   
   return redirect(url_for('ideas'))
 
+# auth-route for new user to sign up
 @app.route('/signup', methods =["GET", "POST"])
 def signup():
     form = UserForm(request.form)
@@ -86,7 +100,7 @@ def signup():
         return redirect(url_for('login'))
     return render_template('users/signup.html', form=form)
 
-
+# auth-route for existing user to log in
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     form = UserForm(request.form)
