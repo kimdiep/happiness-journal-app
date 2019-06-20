@@ -6,13 +6,19 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, text
 from sqlalchemy.orm import sessionmaker
 from flask_modus import Modus
+from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://localhost/happiness-journal'
 modus = Modus(app)
 db = SQLAlchemy(app)
 Migrate(app, db)
+
+from users.views import users_blueprint
+
+app.register_blueprint(users_blueprint, url_prefix='/users')
 
 from happiness_journal import *
 

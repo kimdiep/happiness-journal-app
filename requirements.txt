@@ -1,4 +1,5 @@
 Flask==1.0.2
+flask-bcrypt==0.7.1
 flask-migrate==2.5.2
 flask-modus==0.0.1
 flask-testing==0.7.1
