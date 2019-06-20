@@ -95,12 +95,8 @@ def login():
         if found_user:
             authenticated_user = bcrypt.check_password_hash(found_user.password, form.data['password'])
             if authenticated_user:
-                return redirect(url_for('welcome'))
+                return redirect(url_for('index'))
     return render_template('users/login.html', form=form)
-
-@app.route('/welcome')
-def welcome():
-    return render_template('users/welcome.html')
 
 if __name__=="__main__":
   app.run(debug=True)
