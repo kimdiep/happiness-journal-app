@@ -16,9 +16,9 @@ modus = Modus(app)
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-from users.views import users_blueprint
-
-app.register_blueprint(users_blueprint, url_prefix='/users')
+import os
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 
 from happiness_journal import *
 
@@ -30,6 +30,11 @@ def create_session(config):
   return session
 
 manual_session = create_session(app.config)
+
+from forms import UserForm
+from user_model import User
+
+from sqlalchemy.exc import IntegrityError
 
 @app.route('/')
 def index():
@@ -68,6 +73,34 @@ def delete(id):
   
   return redirect(url_for('ideas'))
 
+@app.route('/signup', methods =["GET", "POST"])
+def signup():
+    form = UserForm(request.form)
+    if request.method == "POST" and form.validate():
+        try:
+            new_user = User(form.data['username'], form.data['password'])
+            db.session.add(new_user)
+            db.session.commit()
+        except IntegrityError as e:
+            return render_template('users/signup.html', form=form)
+        return redirect(url_for('login'))
+    return render_template('users/signup.html', form=form)
+
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    form = UserForm(request.form)
+    if request.method == "POST" and form.validate():
+        found_user = User.query.filter_by(username = form.data['username']).first()
+        if found_user:
+            authenticated_user = bcrypt.check_password_hash(found_user.password, form.data['password'])
+            if authenticated_user:
+                return redirect(url_for('welcome'))
+    return render_template('users/login.html', form=form)
+
+@app.route('/welcome')
+def welcome():
+    return render_template('users/welcome.html')
 
 if __name__=="__main__":
   app.run(debug=True)
