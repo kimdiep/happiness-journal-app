@@ -19,8 +19,8 @@ class TestingViews(TestCase):
   # setup testing database
   def setUp(self):
     db.create_all()
-    idea1 = Idea("This is a test note", complete = False)
-    idea2 = Idea("This is another test note", complete = False)
+    idea1 = Idea("This is a test note", complete = False, user_id = 1)
+    idea2 = Idea("This is another test note", complete = False, user_id = 1)
     pusheen = User('pusheen','test123')
     db.session.add_all([idea1, idea2, pusheen])
     db.session.commit()

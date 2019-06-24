@@ -12,7 +12,7 @@ class Idea(db.Model):
     def __repr__(self):
         return '<Idea %r>' % self.note
 
-    def __init__(self, note, complete):
+    def __init__(self, note, complete, user_id):
         self.note = note
         self.complete = complete
         self.user_id = user_id
