@@ -76,7 +76,7 @@ def ideas():
 @ensure_logged_in
 def new():
   if request.method == 'POST':
-    new_idea = Idea(request.form['idea_note'], complete=False)
+    new_idea = Idea(request.form['idea_note'], complete=False, user_id = session['user_id'])
     db.session.add(new_idea)
     db.session.commit()
     return redirect(url_for('ideas'))
