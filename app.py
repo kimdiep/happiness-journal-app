@@ -2,13 +2,14 @@ import sys
 sys.path.append('./models')
 
 # flask setup
-from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, and_, text
 from sqlalchemy.orm import sessionmaker
 from flask_modus import Modus
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from functools import wraps
 
 app = Flask(__name__)
 # bcrypt for password hashing
@@ -42,16 +43,29 @@ from user_model import User
 
 from sqlalchemy.exc import IntegrityError
 
+# login decorator
+
+def ensure_logged_in(fn):
+  @wraps(fn)
+  def wrapper(*args, **kwargs):
+    if not session.get('user_id'):
+      flash("Whoopsie! You must be logged in first to view this page!")
+      return redirect(url_for('login'))
+    return fn(*args, **kwargs)
+  return wrapper
+
 # app-controllers
 
 # homepage
 @app.route('/')
+@ensure_logged_in
 def index():
   text = "Hello, Happiness Journal!"
   return render_template('index.html', message = text)
 
 # ideas page
 @app.route('/ideas', methods=["GET"])
+@ensure_logged_in
 def ideas():
   text = "My Happiness Journal Ideas!"
   ideas = Idea.query.all()
@@ -59,6 +73,7 @@ def ideas():
 
 # route to add new idea
 @app.route('/ideas/new', methods=['POST', 'GET'])
+@ensure_logged_in
 def new():
   if request.method == 'POST':
     new_idea = Idea(request.form['idea_note'], complete=False)
@@ -69,6 +84,7 @@ def new():
 
 # route to edit existing idea
 @app.route('/ideas/edit/<int:id>', methods=["GET", "POST"])
+@ensure_logged_in
 def edit(id):
   idea = Idea.query.get(id)
   if request.method == 'POST':
@@ -79,6 +95,7 @@ def edit(id):
 
 # route to delete existing idea
 @app.route('/ideas/delete/<int:id>', methods=['GET'])
+@ensure_logged_in
 def delete(id):
   idea = Idea.query.get(id)
   db.session.delete(idea)
@@ -96,6 +113,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
         except IntegrityError as e:
+            flash("Oopsy! Please try again!")
             return render_template('users/signup.html', form=form)
         return redirect(url_for('login'))
     return render_template('users/signup.html', form=form)
@@ -109,7 +127,10 @@ def login():
         if found_user:
             authenticated_user = bcrypt.check_password_hash(found_user.password, form.data['password'])
             if authenticated_user:
-                return redirect(url_for('index'))
+              flash("Woohoo! You are inside the Happiness Journal!")
+              session['user_id'] = found_user.id
+              return redirect(url_for('index'))
+        flash("Oopsy! Your username and password is unrecognised. Please try again!")
     return render_template('users/login.html', form=form)
 
 if __name__=="__main__":

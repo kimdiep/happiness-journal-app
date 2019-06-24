@@ -5,6 +5,10 @@
     <title>Welcome</title>
 </head>
 <body>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+
     {{ message }}
     <a href="{{url_for('ideas')}}">Go to ideas page!</a>
 </body>
