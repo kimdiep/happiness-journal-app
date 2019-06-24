@@ -21,4 +21,10 @@
     </p>
     <button type="submit">Log In!</button>
 </form>
+
+{% for message in get_flashed_messages() %}
+  {{ message }}
+{% endfor %}
+
+<a href="{{url_for('signup')}}">Are you new to the Happiness Journal? Sign up here!</a>
   
