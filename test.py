@@ -21,8 +21,10 @@ class TestingViews(TestCase):
     db.create_all()
     idea1 = Idea("This is a test note", complete = False, user_id = 1)
     idea2 = Idea("This is another test note", complete = False, user_id = 1)
+    idea3 = Idea("This is a Kirby test note", complete = False, user_id = 2)
     pusheen = User('pusheen','test123')
-    db.session.add_all([idea1, idea2, pusheen])
+    kirby = User('kirby','test321')
+    db.session.add_all([idea1, idea2, idea3, pusheen, kirby])
     db.session.commit()
 
   def test_view_homepage(self):
@@ -39,7 +41,7 @@ class TestingViews(TestCase):
     self.assertNotIn(b'Hello, Happiness Journal!', response.data)
     self.assertIn(b'Whoopsie! You must be logged in first to view this page!', response.data)
 
-  def test_view_ideas(self):
+  def test_view_ideas_pusheen(self):
     sign_in = self.client.post(
       '/login',
       data=dict(username="pusheen",password="test123"),
@@ -50,6 +52,20 @@ class TestingViews(TestCase):
     self.assertIn(b'Happiness Journal Ideas!', response.data)
     self.assertIn(b'This is a test note', response.data)
     self.assertIn(b'This is another test note', response.data)
+    self.assertNotIn(b"This is a Kirby test note", response.data)
+
+  def test_view_ideas_kirby(self):
+    sign_in = self.client.post(
+      '/login',
+      data=dict(username="kirby",password="test321"),
+      follow_redirects=True
+    )
+    response = self.client.get('/ideas', content_type = 'html/text')
+    self.assertEqual(response.status_code, 200)
+    self.assertIn(b'Happiness Journal Ideas!', response.data)
+    self.assertNotIn(b'This is a test note', response.data)
+    self.assertNotIn(b'This is another test note', response.data)
+    self.assertIn(b"This is a Kirby test note", response.data)
 
   def test_view_ideas_unhappy_path(self):
     response = self.client.get('/ideas', content_type = 'html/text', follow_redirects=True)
