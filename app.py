@@ -68,7 +68,7 @@ def index():
 @ensure_logged_in
 def ideas():
   text = "My Happiness Journal Ideas!"
-  ideas = Idea.query.all()
+  ideas = Idea.query.filter_by(user_id = session['user_id'])
   return render_template('ideas/homepage.html', message = text, ideas = ideas)
 
 # route to add new idea
