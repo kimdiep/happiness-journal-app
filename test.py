@@ -50,6 +50,8 @@ class TestingViews(TestCase):
     response = self.client.get('/ideas', content_type = 'html/text')
     self.assertEqual(response.status_code, 200)
     self.assertIn(b'Happiness Journal Ideas!', response.data)
+    self.assertIn(b'Add new idea', response.data)
+    self.assertIn(b'Logout', response.data)
     self.assertIn(b'This is a test note', response.data)
     self.assertIn(b'This is another test note', response.data)
     self.assertNotIn(b"This is a Kirby test note", response.data)
@@ -188,6 +190,21 @@ class TestingViews(TestCase):
     )
     self.assertEqual(sign_in.status_code, 200)
     self.assertIn(b'Oopsy! Your username and password is unrecognised. Please try again!', sign_in.data)
+
+  def test_logout_pusheen(self):
+    sign_in = self.client.post(
+      '/login',
+      data=dict(username="pusheen",password="test123"),
+      follow_redirects=True
+    )
+    response = self.client.get('/ideas', content_type = 'html/text')
+    self.assertEqual(response.status_code, 200)
+    self.assertIn(b'Happiness Journal Ideas!', response.data)
+    response = self.client.get('/logout', content_type = 'html/text', follow_redirects=True)
+    self.assertIn(b'Goodbye! See you next time!', response.data)
+    self.assertIn(b'username', response.data)
+    self.assertIn(b'password', response.data)
+    self.assertIn(b'Log In!', response.data)
     
   def tearDown(self):
     db.drop_all()
