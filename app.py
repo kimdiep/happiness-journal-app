@@ -133,5 +133,13 @@ def login():
         flash("Oopsy! Your username and password is unrecognised. Please try again!")
     return render_template('users/login.html', form=form)
 
+# logout
+@app.route('/logout')
+def logout():
+  session.pop('user_id', None)
+  flash('Goodbye! See you next time!')
+  return redirect(url_for('login'))
+
+
 if __name__=="__main__":
   app.run(debug=True)
