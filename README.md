@@ -71,7 +71,7 @@ https://www.getpostman.com/downloads/
 
 To start up the Flask server:
 
-`python3 main.py`
+`python3 app.py`
 
 Alternatively, you can also tell your terminal the application to work with by exporting the FLASK_APP environment variable and setting the debug mode to `true` to enable the server to detect changes:
 
@@ -92,6 +92,7 @@ $ flask run
 ### Database Migrations with Flask Migrate
 
 **Option 1 (personal project):**
+
 `db.create_all` to create db tables in Flask-SQLAlchemy
 
  In the root directory, start `python3` and enter the following commands to initialise database tables from the `happiness-journal.py` SQLAlchemy model:
@@ -133,6 +134,25 @@ Tests are available in `test.py`. To run the tests:
 python3 test.py -v
 
 ```
+
+## Troubleshooting
+
+### Python 3.8+
+For the latest Python versions 3.8+, you may get the error while installing Python dependencies.
+
+```bash
+pip3 install -r requirements.txt # to install python dependencies
+
+```
+
+```bash
+ImportError: cannot import name 'url_encode' from 'werkzeug
+```
+
+You can fix this by setting  `werkzeug==1.0.0` to `werkzeug==0.16.1`
+
+https://stackoverflow.com/questions/60896993/importerror-cannot-import-name-url-encode-from-werkzeug
+
 
 ## Credits
 
